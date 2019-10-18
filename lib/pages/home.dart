@@ -66,20 +66,12 @@ class HomePageState extends State<HomePage> {
           horizontal: 10.0,
           vertical: 20.0,
         ),
-        child: FutureBuilder(
-          future: getTodo(),
-          builder: (context, snapshot) {
-            return itemList(snapshot.data);
-          },
-        ),
+        child: itemList(dummyList),
       ),
       backgroundColor: Color(0xfff0f0f0),
     );
   }
 
-  Future getTodo() async {
-    return await WebService().getRequest('/list_todo');
-  }
 
   Widget itemList(List todos) {
     return ListView.builder(
@@ -103,7 +95,7 @@ class HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  todo['username'].toString() + ' - ' + todo['title'],
+                  todo['username'] == null ? widget.userName : 'N/A' + ' - ' + todo['title'],
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),

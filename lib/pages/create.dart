@@ -116,7 +116,6 @@ class CreatePageState extends State<CreatePage> {
         ),
         onPressed: () {
           if (form.currentState.validate()) {
-            // Navigator.pop(context);
             submitForm();
           } else {
             setState(() {
@@ -129,27 +128,6 @@ class CreatePageState extends State<CreatePage> {
   }
 
   void submitForm() async {
-    setState(() {
-      showLoading = true;
-    });
-
-    Map params = {
-      'username': widget.userName,
-      'title': title.text,
-      'description': description.text,
-    };
-
-    WebService().sendingRequest('/create_todo', params).then((result) {
-      setState(() {
-        showLoading = false;
-      });
-      HelperService().displayToast(result['msg']);
-      Navigator.pop(context);
-    }).catchError((error) {
-      setState(() {
-        showLoading = false;
-      });
-      HelperService().displayToast(error);
-    });
+//
   }
 }
