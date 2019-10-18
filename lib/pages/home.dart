@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_apps/pages/create.dart';
 import 'package:todo_apps/pages/login.dart';
+import 'package:todo_apps/services/web-service.dart';
 
 class HomePage extends StatefulWidget {
   final String userName;
@@ -42,7 +43,7 @@ class HomePageState extends State<HomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => CreatePage(),
+                  builder: (context) => CreatePage(userName: widget.userName),
                 ),
               );
             },
@@ -65,14 +66,28 @@ class HomePageState extends State<HomePage> {
           horizontal: 10.0,
           vertical: 20.0,
         ),
-        child: ListView.builder(
-          itemCount: dummyList.length,
-          itemBuilder: (BuildContext context, int index) {
-            return itemTodo(dummyList[index]);
+        child: FutureBuilder(
+          future: getTodo(),
+          builder: (context, snapshot) {
+            return itemList(snapshot.data);
           },
         ),
       ),
       backgroundColor: Color(0xfff0f0f0),
+    );
+  }
+
+  Future getTodo() async {
+    final result = await WebService().getRequest('/list_todo');
+    return result;
+  }
+
+  Widget itemList(List todos) {
+    return ListView.builder(
+      itemCount: todos.length,
+      itemBuilder: (BuildContext context, int index) {
+        return itemTodo(todos[index]);
+      },
     );
   }
 
