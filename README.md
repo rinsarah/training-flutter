@@ -1,6 +1,6 @@
 # Todo Apps
 
-Simple Todo with integration with backend using API/Webservice.
+Simple Todo which has integration with backend using API/Webservice.
 
 ## Getting Started
 
