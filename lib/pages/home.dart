@@ -78,8 +78,7 @@ class HomePageState extends State<HomePage> {
   }
 
   Future getTodo() async {
-    final result = await WebService().getRequest('/list_todo');
-    return result;
+    return await WebService().getRequest('/list_todo');
   }
 
   Widget itemList(List todos) {
@@ -104,7 +103,7 @@ class HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  widget.userName + ' - ' + todo['title'],
+                  todo['username'].toString() + ' - ' + todo['title'],
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
