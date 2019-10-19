@@ -25,7 +25,7 @@ class CreatePageState extends State<CreatePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create Todo'),
+        title: Text('New Todo'),
       ),
       body: showLoading == false
           ? SingleChildScrollView(
@@ -128,6 +128,25 @@ class CreatePageState extends State<CreatePage> {
   }
 
   void submitForm() async {
-//
+    Map params = {
+      'username': widget.userName,
+      'title': title.text,
+      'description': description.text,
+    };
+
+    WebService().postRequest('/create_todo', params).then((result){
+      print(result);
+      setState(() {
+        showLoading = false;
+      });
+      Navigator.pop(context);
+      HelperService().displayToast(result['msg']);
+    }).catchError((error){
+      print(error);
+      HelperService().displayToast(error);
+      setState(() {
+       showLoading = false; 
+      });
+    });
   }
 }

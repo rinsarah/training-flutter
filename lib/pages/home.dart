@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todo_apps/pages/create.dart';
 import 'package:todo_apps/pages/login.dart';
 import 'package:todo_apps/services/web-service.dart';
+import 'package:todo_apps/widgets/loading.dart';
 
 class HomePage extends StatefulWidget {
   final String userName;
@@ -66,12 +67,24 @@ class HomePageState extends State<HomePage> {
           horizontal: 10.0,
           vertical: 20.0,
         ),
-        child: itemList(dummyList),
+        child: FutureBuilder(
+          future: getTodo(),
+          builder: (context, result) {
+            if (result.hasData) {
+              return itemList(result.data);
+            } else {
+              return Loading();
+            }
+          },
+        ),
       ),
       backgroundColor: Color(0xfff0f0f0),
     );
   }
 
+  Future getTodo() async {
+    return await WebService().getRequest('/list_todo');
+  }
 
   Widget itemList(List todos) {
     return ListView.builder(
@@ -95,7 +108,7 @@ class HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  todo['username'] == null ? widget.userName : 'N/A' + ' - ' + todo['title'],
+                  todo['username'] + ' - ' + todo['title'],
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
